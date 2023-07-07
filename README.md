@@ -1,15 +1,14 @@
 
-<a name="Lifting the Bar"></a>
-
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
+# Lifting the Bar 🚀
  
 
-  <h3 align="left">Lifting the Bar</h3>
+  ## Introduction 🤝
+
 
   <p align="left">
-    Code and documentation on the survey to help young people succeed when they return to school.
+    Howdy, fellow Lifting the Bar researcher! 
+	  
+Here, you will find the code and documentation for the survey we distribute to students that are reintegrating into school. This document is designed to take you through how we have designed our code in Qualtrics (the survey engine) so that future edits and overhauls can be made! To see the code for every question, just click through the folders in the repository. 
     <br />
     <br />
     <br />
@@ -54,7 +53,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-We want to ensure high engagement with the survey. We also want people to be able to edit the code in the future! So, this repository holds the code and documentation for this survey. The goal is for it to be easy to make a cookie-cutter edit and comprehensive enough to make an overhaul.
+We want to ensure high engagement with the survey. We also want people to be able to edit the code in the future! So, this repository holds the code and documentation for this survey. 
+
+The goal is for it to be easy to make a cookie-cutter edit and comprehensive enough to make an overhaul.
 
 ### Built With
 
@@ -68,7 +69,7 @@ Log into Qualtrics and open up the project (linked soon).
 
 
 <!-- USAGE EXAMPLES -->
-## Examples & Usage
+## Understanding the code
 
 These examples will demonstrate how to use both types of code in this project (HTML and Javascript). HTML is primarily used for text and generic entry pages that do not have custom properties. Javascript is primarily used for pages with custom entry properties.
 
@@ -185,7 +186,9 @@ Qualtrics.SurveyEngine.addOnUnload(function()
 });
 ```
 
-First, we will be implementing prefilled text. First, you must create a question container and text area field, which is done like this:
+#### First, we will be implementing prefilled text. 
+
+First, you must create a question container and text area field, which is done like this:
 
 ```
 // Get the question container
@@ -195,7 +198,7 @@ First, we will be implementing prefilled text. First, you must create a question
     var textarea = container.querySelector('textarea');
 ```
 
-Then, set your pre-filled text with properties similar to HTML (but in Javascript):
+Then, give your pre-filled text  properties similar to how you would in HTML (but in Javascript):
 
 ```
  // Pre-filled text
@@ -207,7 +210,338 @@ Then, set your pre-filled text with properties similar to HTML (but in Javascrip
     textarea.style.fontFamily = 'Helvetica, sans-serif';
 ```
 
-And finally, have Qualtrics set the variable [STOPPED HERE]
+And finally, have Qualtrics set the variable of the edited text box to the variable "SIB_challenge", which is where we want it stored in the end:
+
+```
+    // Add event listener to input box
+    textarea.addEventListener('focus', function() {
+	// if empty, set value to nothing 
+        if (textarea.value === preFilledText) {
+            textarea.value = '';
+            textarea.style.opacity = '1';
+        }
+    });
+
+    textarea.addEventListener('blur', function() {
+        if (textarea.value === '') {
+            textarea.value = preFilledText;
+            textarea.style.opacity = '0.6';
+	// if empty, set value to prefill text and slightly transparent
+        } else {
+	// otherwise, set variable to be equal to what user inputted
+            Qualtrics.SurveyEngine.setEmbeddedData('SIB_challenge', textarea.value);
+        }
+    });
+```
+
+Notice that our first "if" statement checks to see if the text field is the same as the prefilled text, in which case it does nothing except ensure the variable's value is blank. Otherwise, our variable is updated to what the user inputted.
+
+Putting it all together, we have:
+
+```
+Qualtrics.SurveyEngine.addOnload(function() {
+    // Get the question container
+    var container = this.getQuestionContainer();
+
+    // Get the textarea field
+    var textarea = container.querySelector('textarea');
+    
+    // Pre-filled text
+    var preFilledText = "Don't worry about using complete sentences, grammar, or spelling! Just share what you think.";
+    textarea.value = preFilledText;
+    textarea.style.color = '#3A95FF';
+    textarea.style.opacity = '0.6';
+    textarea.style.fontSize = '20px';
+    textarea.style.fontFamily = 'Helvetica, sans-serif';
+
+    // Add event listener to input box
+    textarea.addEventListener('focus', function() {
+        if (textarea.value === preFilledText) {
+            textarea.value = '';
+            textarea.style.opacity = '1';
+        }
+    });
+
+    textarea.addEventListener('blur', function() {
+        if (textarea.value === '') {
+            textarea.value = preFilledText;
+            textarea.style.opacity = '0.6';
+        } else {
+            Qualtrics.SurveyEngine.setEmbeddedData('SIB_challenge', textarea.value);
+        }
+    });
+});
+
+Qualtrics.SurveyEngine.addOnReady(function()
+{
+	/*Place your JavaScript here to run when the page is fully displayed*/
+
+});
+
+Qualtrics.SurveyEngine.addOnUnload(function()
+{
+	/*Place your JavaScript here to run when the page is unloaded*/
+
+});
+```
+
+And now you know how to implement pre-filled text!
+
+#### Next, we will be looking at how to implement a custom multiple choice form.
+
+First, design your choices in a list:
+
+```
+const data = [
+    { emoji: "🦸🏻‍♂️", text: "Be a good role model for my younger brother or sister" },
+	
+    { emoji: "💼", text: "Learn skills that could help me get a good job" },
+	
+    { emoji: "👨‍👩‍👦", text: "Make my parents proud of me" },
+	
+	{ emoji: "📚", text: "Try my best in school" },
+		
+	{ emoji: "🎓", text: "Prepare myself for college" },
+	
+    { emoji: "📈", text: "Help support my family" },
+	
+	{ emoji: "🎨", text: "Use art or music as a way to express myself" },
+	
+    { emoji: "❤️", text: "Have good relationships with people" },
+    // Add more choices as needed.
+];
+```
+
+Then, we want to create a container that holds all of the options:
+
+```
+// Create container that will hold all of the choices
+const container = document.getElementById("choiceContainer");
+```
+
+Then for every item in data we want to create a box that will hold the particular option: 
+
+```
+// Create choices.
+data.forEach((item, index) => {
+// create the outer box
+    const box = document.createElement("div");
+// "choice-box" design properties comes from CSS "choice-box" 
+    box.classList.add("choice-box");
+```
+
+Inside that box, we want to add and style the emoji and caption. Notice that we have to create the space and style first, then add the actual emoji from data:
+
+```
+// create the emoji space on top
+    const emoji = document.createElement("div");
+// add the emoji with properties from CSS "emoji"
+    emoji.classList.add("emoji");
+// add the actual emoji
+    emoji.innerText = item.emoji;
+
+// create the caption space below the emoji space
+    const caption = document.createElement("div");
+// choose the style properties from CSS "caption"
+    caption.classList.add("caption");
+// add the actual text
+    caption.innerText = item.text;
+
+// put emoji and caption into the box
+    box.appendChild(emoji);
+    box.appendChild(caption);
+```
+
+Now, we need to listen for when the box is selected, in which we will make the outline blue (from CSS style class "selected") and add it to data using the function "updateEmbeddedData" (which we will cover soon):
+
+```
+ box.addEventListener("click", function() {
+        this.classList.toggle("selected");
+// below is the function to update how to track which box is selected
+        updateEmbeddedData();
+});
+```
+
+Finally, we add the finished box into the parent container:
+
+```
+container.appendChild(box);
+```
+
+However, the "other" box is not in the data that will be looped through. We need to add it manually in the same way we made the other options, but replacing the emoji header with a title "Other" and the subtitle with an entry box. Because it is the same format as detailed above, here it is all together: 
+
+```
+// Create an "Other" input field.
+
+const otherContainer = document.createElement("div");
+otherContainer.classList.add("choice-box", "other-container");
+
+// Like the other boxes, the label won't be an emoji, it will be the title "Other"
+
+const otherLabel = document.createElement("div");
+otherLabel.classList.add("caption");
+// Add 'caption' class to make it look like the rest of the boxes
+otherLabel.innerText = "Other:";
+
+// Then, where the subtitle would usually go, we have a text input.
+
+const otherInput = document.createElement("input");
+
+// This "type" is the key to having it appear as an input rather than a subtitle.
+
+otherInput.type = "text";
+otherInput.classList.add("other-input");
+
+otherContainer.appendChild(otherLabel);
+otherContainer.appendChild(otherInput);
+
+// set the embedded data for the input box to be a different embedded variable from the other options.
+
+otherContainer.addEventListener("input", function() {
+Qualtrics.SurveyEngine.setEmbeddedData("important_other", otherInput.value);
+});
+
+container.appendChild(otherContainer);
+```
+
+Finally, we need to make the function "updateEmbeddedData" that will be called after any option is selected. It loops through all selected items and adds the captions to a single embedded data array.
+
+```
+function updateEmbeddedData() {
+	// go through every item
+	
+	const selectedItems = Array.from(container.getElementsByClassName("selected"));
+	
+	// collect all of the captions from each item
+	
+	const selectedTexts = selectedItems.map(item => item.getElementsByClassName("caption")[0].innerText).join(", ");
+	
+	// set that equal to the array "important" in embedded data
+	Qualtrics.SurveyEngine.setEmbeddedData("important", selectedTexts);
+}
+```
+
+All together, we have:
+
+```
+Qualtrics.SurveyEngine.addOnload(function()
+{
+// Options
+const data = [
+    	{ emoji: "🦸🏻‍♂️", text: "Be a good role model for my younger brother or sister" },
+	
+    	{ emoji: "💼", text: "Learn skills that could help me get a good job" },
+	
+    	{ emoji: "👨‍👩‍👦", text: "Make my parents proud of me" },
+	
+	{ emoji: "📚", text: "Try my best in school" },
+		
+	{ emoji: "🎓", text: "Prepare myself for college" },
+	
+    	{ emoji: "📈", text: "Help support my family" },
+	
+	{ emoji: "🎨", text: "Use art or music as a way to express myself" },
+	
+    	{ emoji: "❤️", text: "Have good relationships with people" },
+    	// Add more choices as needed.
+];
+	
+// Create container that will hold all of the choices
+
+const container = document.getElementById("choiceContainer");
+
+// Create choices.
+
+data.forEach((item, index) => {
+	// create the outer box
+    	const box = document.createElement("div");
+	// "choice-box" design properties comes from CSS "choice-box" 
+    	box.classList.add("choice-box");
+
+	// create the emoji space on top
+    	const emoji = document.createElement("div");
+	// add the emoji with properties from CSS "emoji"
+    	emoji.classList.add("emoji");
+	// add the actual emoji
+    	emoji.innerText = item.emoji;
+
+	// create the caption space below the emoji space
+    	const caption = document.createElement("div");
+	// choose the style properties from CSS "caption"
+    	caption.classList.add("caption");
+	// add the actual text
+    	caption.innerText = item.text;
+
+	// put emoji and caption into the box
+    	box.appendChild(emoji);
+    	box.appendChild(caption);
+
+	// listen for when the box is selected
+    	box.addEventListener("click", function() {
+        this.classList.toggle("selected");
+	// below is the function to update how to track which box is selected
+        updateEmbeddedData();
+    });
+
+	// add the box into the parent container
+    	container.appendChild(box);
+});
+	
+// Create an "Other" input field.
+const otherContainer = document.createElement("div");
+otherContainer.classList.add("choice-box", "other-container"); 
+
+// Like the other boxes, the label won't be an emoji, it will be the title "Other"
+const otherLabel = document.createElement("div");
+otherLabel.classList.add("caption"); // Add 'caption' class to make it look like the rest of the boxes
+otherLabel.innerText = "Other:";
+
+// Then, where the subtitle would usually go, we have a text input.
+const otherInput = document.createElement("input");
+// This "type" is the key to having it appear as an input rather than a subtitle.
+otherInput.type = "text";
+otherInput.classList.add("other-input");
+
+otherContainer.appendChild(otherLabel);
+otherContainer.appendChild(otherInput);
+
+// set the embedded data for the input box to be a different embedded variable from the other options.
+otherContainer.addEventListener("input", function() {
+	Qualtrics.SurveyEngine.setEmbeddedData("important_other", otherInput.value);
+});
+
+container.appendChild(otherContainer);
+
+
+// Update embedded data.
+function updateEmbeddedData() {
+	// go through every item
+        const selectedItems = Array.from(container.getElementsByClassName("selected"));
+	// collect all of the captions from each item
+        const selectedTexts = selectedItems.map(item => item.getElementsByClassName("caption")[0].innerText).join(", ");
+        // set that equal to the array "important" in embedded data
+	Qualtrics.SurveyEngine.setEmbeddedData("important", selectedTexts);
+    }
+});
+
+Qualtrics.SurveyEngine.addOnReady(function()
+{
+	/*Place your JavaScript here to run when the page is fully displayed*/
+
+});
+
+Qualtrics.SurveyEngine.addOnUnload(function()
+{
+	/*Place your JavaScript here to run when the page is unloaded*/
+
+});
+```
+
+Yay! Now you know how to implement a custom multiple choice field in Qualtrics. Once again, you can copy/paste this as a reference or use Stack Overflow/ChatGPT for unique implementations.
+
+#### Custom written response 
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
