@@ -287,7 +287,7 @@ Qualtrics.SurveyEngine.addOnUnload(function()
 
 And now you know how to implement pre-filled text!
 
-#### Next, we will be looking at how to implement a custom multiple choice form.
+#### Next, we will be looking at how to implement a custom multiple-choice form.
 
 First, design your choices in a list:
 
@@ -330,7 +330,7 @@ data.forEach((item, index) => {
     box.classList.add("choice-box");
 ```
 
-Inside that box, we want to add and style the emoji and caption. Notice that we have to create the space and style first, then add the actual emoji from data:
+We want to add and style the emoji and caption inside that box:
 
 ```
 // create the emoji space on top
@@ -352,6 +352,8 @@ Inside that box, we want to add and style the emoji and caption. Notice that we 
     box.appendChild(caption);
 ```
 
+Notice that we have to create the space and style first, then add the actual emoji from the data.
+
 Now, we need to listen for when the box is selected, in which we will make the outline blue (from CSS style class "selected") and add it to data using the function "updateEmbeddedData" (which we will cover soon):
 
 ```
@@ -368,7 +370,7 @@ Finally, we add the finished box into the parent container:
 container.appendChild(box);
 ```
 
-However, the "other" box is not in the data that will be looped through. We need to add it manually in the same way we made the other options, but replacing the emoji header with a title "Other" and the subtitle with an entry box. Because it is the same format as detailed above, here it is all together: 
+However, the "other" box is not in the data that will be looped through. We need to add it manually in the same way we made the other options, but replacing the emoji header with a title "Other" and the subtitle with an entry box. Because it is the same format as detailed above, here is the whole function to make the "other" input: 
 
 ```
 // Create an "Other" input field.
@@ -408,18 +410,16 @@ Finally, we need to make the function "updateEmbeddedData" that will be called a
 
 ```
 function updateEmbeddedData() {
-	// go through every item
-	
-	const selectedItems = Array.from(container.getElementsByClassName("selected"));
-	
-	// collect all of the captions from each item
-	
-	const selectedTexts = selectedItems.map(item => item.getElementsByClassName("caption")[0].innerText).join(", ");
-	
-	// set that equal to the array "important" in embedded data
-	Qualtrics.SurveyEngine.setEmbeddedData("important", selectedTexts);
+// go through every item
+const selectedItems = Array.from(container.getElementsByClassName("selected"));
+// collect all of the captions from each item
+const selectedTexts = selectedItems.map(item => item.getElementsByClassName("caption")[0].innerText).join(", ");
+// set that equal to the array "important" in embedded data
+Qualtrics.SurveyEngine.setEmbeddedData("important", selectedTexts);
 }
 ```
+
+Notice that a Qualtrics function is used and a Javascript operator ".map" and ".join". While ".map" can iterate through an array and ".join" connects them with commas, the function to use is not always obvious! Therefore, it is always encouraged to Google or StackOverflow or ChatGPT your particular use case! 
 
 All together, we have:
 
@@ -540,6 +540,133 @@ Qualtrics.SurveyEngine.addOnUnload(function()
 Yay! Now you know how to implement a custom multiple choice field in Qualtrics. Once again, you can copy/paste this as a reference or use Stack Overflow/ChatGPT for unique implementations.
 
 #### Custom written response 
+
+Qualtrics usually has what you need when it comes to text input, particularly single line response, multiple lines, essay text box, and hidden password. However, we wanted to create a carousel where users could scroll through cards -- almost like a phone book or business cards. This is the use case detailed for this example.
+
+First, like before, we have to create a container that is going to hold our whole custom element:
+
+```
+// Create a container to hold the cards
+const container = document.createElement("div");
+container.id = "cardContainer";
+container.style.width = "65%";
+container.style.height = "400px";
+container.style.display = "flex";
+container.style.margin = "0 auto";
+container.style.justifyContent = "center";
+container.style.alignItems = "center";
+container.style.position = "relative";
+this.getQuestionContainer().appendChild(container);
+```
+
+Notice these elements look like CSS ones, but in JavaScript's style.
+
+Next, we need to create the previous/next button that users will click to go through their cards:
+
+```
+// Create navigation buttons
+const prevButton = document.createElement("button");
+prevButton.textContent = "<";
+prevButton.style.position = "absolute";
+prevButton.style.top = "50%";
+prevButton.style.transform = "translateY(-50%)";
+prevButton.style.left = "5px";  // decrease this value to move the button closer to the box
+container.appendChild(prevButton);
+
+const nextButton = document.createElement("button");
+nextButton.textContent = ">";
+nextButton.style.position = "absolute";
+nextButton.style.top = "50%";
+nextButton.style.transform = "translateY(-50%)";
+nextButton.style.right = "5px";  // decrease this value to move the button closer to the box
+container.appendChild(nextButton);
+```
+
+Notice that we use the standard JavaScript "button" library (in createElement) and simply append it to our container. 
+
+Now, we create the data fields that we want the user to input to. For our case, we want them to input three adults. We are about to build the cards, so we create an empty array:
+
+```
+const data = ["Adult 1", "Adult 2", "Adult 3"];
+let cards = [];
+```
+
+Next, we create a card for each item of data! It seems extensive, but we are just making styling components, then creating a title and text input options for their name and job title. Finally, we append it to our empty array "cards" and to the container:
+
+```
+    data.forEach((adult, index) => {
+        // Create a card for each adult
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.style.backgroundColor = "#2387FC";
+        card.style.borderRadius = "10px";
+        card.style.padding = "10px";
+        card.style.margin = "10px";
+        card.style.width = "350px";
+        card.style.height = "350px";
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+        card.style.alignItems = "center";
+        card.style.justifyContent = "space-evenly";
+        card.style.color = "white";
+        card.style.position = "absolute";
+        card.style.left = "50%";
+        card.style.top = "50%";
+        card.style.transform = "translate(-50%, -50%)";
+        card.style.visibility = (index == 0) ? "visible" : "hidden";
+
+        // Create title for card
+        const title = document.createElement("div");
+        title.textContent = adult;
+		title.style.fontSize = "30px"; // add this line to increase the size of the "Adult" text
+        card.appendChild(title);
+
+        // Create input for name
+        const nameInput = document.createElement("input");
+        nameInput.placeholder = "Name";
+        nameInput.id = "name" + index;
+		nameInput.style.height = "40px";  // increase this value to make the input field larger
+		nameInput.style.width = "300px";
+        card.appendChild(nameInput);
+
+        // Create input for job
+        const jobInput = document.createElement("input");
+        jobInput.placeholder = "Job";
+        jobInput.id = "job" + index;
+		jobInput.style.height = "40px";  // increase this value to make the input field larger
+		jobInput.style.width = "300px";
+        card.appendChild(jobInput);
+
+        cards.push(card);
+        container.appendChild(card);
+    });
+```
+
+Then, we create logic to determine which card to show based on if the user clicked on the next or previous button along with what "index" they are on at that moment! 
+
+```
+   let currentIndex = 0;
+
+    // Event handlers for navigation buttons
+    prevButton.onclick = function() {
+        if(currentIndex > 0) {
+            cards[currentIndex].style.visibility = "hidden";
+            currentIndex--;
+            cards[currentIndex].style.visibility = "visible";
+        }
+    };
+
+    nextButton.onclick = function() {
+        if (currentIndex < cards.length - 1) {
+            cards[currentIndex].style.visibility = "hidden";
+            currentIndex++;
+            cards[currentIndex].style.visibility = "visible";
+        }
+    };
+```
+
+Great! You now know how to design a custom input (particularly a carousel) in Qualtrics! Now, for our use case, we needed to have verification to ensure that the user inputted at least two names. 
+
 
 
 
