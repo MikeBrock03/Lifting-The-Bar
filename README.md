@@ -8,7 +8,7 @@
   <p align="left">
     Howdy, fellow Lifting the Bar researcher! 
 	  
-Here, you will find the code and documentation for the survey we distribute to students that are reintegrating into school. This document is designed to take you through how we have designed our code in Qualtrics (the survey engine) so that future edits and overhauls can be made! To see the code for every question, just click through the folders in the repository. 
+Here, you will find the code and documentation for the survey we distribute to students reintegrating into school. This document is designed to take you through how we have created our code in Qualtrics (the survey engine) so that future edits and overhauls can be made! To see the code for every question, just click through the folders in the repository. 
     <br />
     <br />
     <br />
@@ -65,7 +65,7 @@ The goal is for it to be easy to make a cookie-cutter edit and comprehensive eno
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Log into Qualtrics and open up the project (linked soon).
+Log into Qualtrics and <a href="https://stanforduniversity.qualtrics.com/survey-builder/SV_3WMGla3ynz7osPI/edit">open up the project.</a>
 
 
 <!-- USAGE EXAMPLES -->
@@ -75,9 +75,9 @@ These examples will demonstrate how to use both types of code in this project (H
 
 ### HTML
 
-[insert image soon]
+To make editing easy, we have utilized Custom CSS so that you can call a "class" that determines a font size/spacing, rather than having to do it everytime. Here is an example of using that: 
 
-To make editing easy, we have utilized Custom CSS so that you can call a "class" that determines a font size / spacing, rather than having to do it everytime. Here is an example of using that: 
+![What older students shared](https://github.com/MikeBrock03/Lifting-The-Bar/images/WhatOlderStudentsShared.png)
 
 ```
     <div class="section main-title">What older students shared</div>
@@ -95,9 +95,11 @@ In this case, in order to change anything about "What older students shared", yo
 ```
 And you could change any of the respective values. With a Google Search, any of the properties are obvious and similar to what a text editor like Google Docs can do.
 
-So, now you know that "class" calls back to something in Custom CSS and you know how to read CSS, HTML should be straight forward! 
+So, now you know that "class" calls back to something in Custom CSS and you know how to read CSS, HTML should be more straightforward and organized! 
 
-Sometimes, it can get complicated. For example, the emoji list you see above cannot just be done in the same way we saw above. In that case, we call them individually, like in this example: 
+![What older students shared](https://github.com/MikeBrock03/Lifting-The-Bar/images/EmojiList.png)
+
+However, sometimes, it can get complicated. For example, the emoji list you see above cannot just be done in the same way we saw above. In that case, we call them individually, like in this example: 
 
 ```
 <div style="margin-top:40px; display: flex; align-items: center;" class="section title">
@@ -105,7 +107,7 @@ Sometimes, it can get complicated. For example, the emoji list you see above can
         <div>Students were able to develop positive relationships with teachers and other adults in school.</div>
 </div>
 ```
-In this case, there is a space of 40px on top and the text is inherited by the CSS property of "title." However, notice there is a property called "display: flex" and "align-items: center". "Flex" is called to have the items fit side by side and they are "centered" so the emoji is in the middle of the paragraph. 
+In this case, there is a space of 40px on top, and the text is inherited by the CSS property of "title." However, notice there is a property called "display: flex" and "align-items: center". "Flex" is called to have the items fit side by side and they are "centered" so the emoji is in the middle of the paragraph. 
 
 Often, the best properties to be used will not be obvious but a well-worded Google Search or ChatGPT prompt will help steer you in the right direction.
 
@@ -114,22 +116,12 @@ Here is the whole code for the image above, and you have learned how HTML is use
 ```
 <div class="wrapper">
 
-<!-- TO CHANGE THE TEXT BELOW, CHECK THE CLASS "MAIN-TITLE" IN CSS. --->
-
     <div class="section main-title">What older students shared</div>
-
-<!-- TO CHANGE THE TEXT BELOW, CHECK THE CLASS "NORMAL-TEXT" IN CSS. --->
 
     <div class="section normal-text">Second, students said that their experience in school got better with time. For example:&nbsp;</div>
 
-<!-- BEGIN LIST OF EMOJIS WITH TEXT --->
-
-<!-- CHANGE SPACE BY ADJUSTING "MARGIN-TOP", CHANGE TEXT BY ADJUSTING "TITLE" IN CSS --->
-
-<!-- EMOJIS ARE TO THE LEFT AND MIDDLE OF THE RESPECTIVE TEXT BY USING "DISPLAY" AND "ALIGN-ITEMS" --->
-
     <div style="margin-top:40px; display: flex; align-items: center;" class="section title">
-<!-- CHANGE EMOJI SIZE BY ADJUSTING "FONT-SIZE", CHANGE TEXT BY ADJUSTING "MARGIN-RIGHT" IN CSS --->
+
         <span style="font-size:64px;margin-right:20px;">👩‍🏫</span>
         <div>Students were able to develop positive relationships with teachers and other adults in school.</div>
     </div>
@@ -149,10 +141,6 @@ Here is the whole code for the image above, and you have learned how HTML is use
         <div>Students felt confident they were making progress on things that mattered to them.</div>
     </div>
 
-<!-- END OF LIST --->
-
-<!-- AUDIO CONTAINER AT BOTTOM --->
-
     <div class="audio-next-container"><div class="audio-control-container">
         <audio width="320" preload="auto" height="40" controls="true" class="qmedia" autoplay="true">
             <source type="audio/mp3" src="https://stanforduniversity.qualtrics.com/CP/File.php?F=F_8ufbYQVlq8LuonQ">
@@ -163,14 +151,13 @@ Here is the whole code for the image above, and you have learned how HTML is use
 ```
 ## Javascript
 
-There are two primary places where Javascript is used in this project. First, it is used to add prefilled text as it is not supported by Qualtrics. Second, to make custom data fields (either in multiple choice form or in text).
+There are two primary places where Javascript is used in this project. First, it is used to add prefilled text as it is not supported by Qualtrics. Second, to make custom data fields (either in multiple-choice form or in text).
 
 When clicking on a question and opening up "Javascript", you get presented with a blank text box only containing: 
 
 ```
 Qualtrics.SurveyEngine.addOnload(function() {
-	/*Place your JavaScript here to run when the page is onloading*/
-
+	/*Place your JavaScript here to run when the page is loading*/
 });
 
 Qualtrics.SurveyEngine.addOnReady(function()
@@ -187,6 +174,8 @@ Qualtrics.SurveyEngine.addOnUnload(function()
 ```
 
 #### First, we will be implementing prefilled text. 
+![Prefilled text](https://github.com/MikeBrock03/Lifting-The-Bar/images/prefilledText.png)
+
 
 First, you must create a question container and text area field, which is done like this:
 
@@ -289,6 +278,11 @@ And now you know how to implement pre-filled text!
 
 #### Next, we will be looking at how to implement a custom multiple-choice form.
 
+![Custom multiple choice](https://github.com/MikeBrock03/Lifting-The-Bar/images/customMultipleChoice.png)
+![Custom multiple choice 2](https://github.com/MikeBrock03/Lifting-The-Bar/images/customMultipleChoice2.png)
+
+
+
 First, design your choices in a list:
 
 ```
@@ -370,7 +364,11 @@ Finally, we add the finished box into the parent container:
 container.appendChild(box);
 ```
 
-However, the "other" box is not in the data that will be looped through. We need to add it manually in the same way we made the other options, but replacing the emoji header with a title "Other" and the subtitle with an entry box. Because it is the same format as detailed above, here is the whole function to make the "other" input: 
+However, the "other" box is not in the data that will be looped through (which just consist of emojis). 
+
+![Custom multiple choice 2](https://github.com/MikeBrock03/Lifting-The-Bar/images/customMultipleChoice2.png)
+
+We need to add it manually in the same way we made the other options, but replacing the emoji header with a title "Other" and the subtitle with an entry box. Because it is the same format as detailed above, here is the whole function to make the "other" input: 
 
 ```
 // Create an "Other" input field.
@@ -540,6 +538,8 @@ Qualtrics.SurveyEngine.addOnUnload(function()
 Yay! Now you know how to implement a custom multiple choice field in Qualtrics. Once again, you can copy/paste this as a reference or use Stack Overflow/ChatGPT for unique implementations.
 
 #### Custom written response 
+![Custom written response](https://github.com/MikeBrock03/Lifting-The-Bar/images/customWrittenResponse.png)
+
 
 Qualtrics usually has what you need when it comes to text input, particularly single line response, multiple lines, essay text box, and hidden password. However, we wanted to create a carousel where users could scroll through cards -- almost like a phone book or business cards. This is the use case detailed for this example.
 
@@ -665,9 +665,68 @@ Then, we create logic to determine which card to show based on if the user click
     };
 ```
 
-Great! You now know how to design a custom input (particularly a carousel) in Qualtrics! Now, for our use case, we needed to have verification to ensure that the user inputted at least two names. 
+Great! You now know how to design a custom input (particularly a carousel) in Qualtrics! Now, for our use case, we needed to have verification to ensure that the user inputted at least two names. If they do not, we don't want to give them access to the "next" button.
+
+![Next button](https://github.com/MikeBrock03/Lifting-The-Bar/images/nextButton.png)
 
 
+First, we want to make the next button.
+```
+const qualtricsNextButton = document.querySelector(".NextButton");
+```
+Then, we have a function checkInputs that will go through the existing array and note how many names have something filled in.
+
+```
+
+const checkInputs = function() {
+let filledNames = 0;
+let name_adult = [];
+
+for(let i=0; i<3; i++) {
+    const nameValue = document.getElementById("name"+i).value;
+    const jobValue = document.getElementById("job"+i).value;
+
+    if (nameValue) {
+	filledNames += 1;
+	name_adult.push({ name: nameValue, job: jobValue });
+    }
+}
+```
+
+When counting that, if it is less than 2 (our desired amount), we want to not show them the nextButton. If this somehow gets bypassed, we also have an error message.
+
+```
+
+if (filledNames < 2) {
+    qualtricsNextButton.disabled = true;
+    errorMessage.textContent = "Please fill out at least two names.";
+    errorMessage.style.display = "block";
+} else {
+    qualtricsNextButton.disabled = false;
+    Qualtrics.SurveyEngine.setEmbeddedData("name_adult", JSON.stringify(name_adult));
+    Qualtrics.SurveyEngine.setEmbeddedData("filledNames", filledNames.toString());
+		
+		for(let i = 0; i < name_adult.length; i++) {
+		Qualtrics.SurveyEngine.setEmbeddedData("adult_name_" + (i + 1), name_adult[i].name);
+		}
+		
+    errorMessage.style.display = "none";
+}
+};
+```
+
+We will run "checkInputs" after every change to an element:
+
+```
+for(let i=0; i<3; i++) {
+document.getElementById("name"+i).addEventListener("input", checkInputs);
+document.getElementById("job"+i).addEventListener("input", checkInputs);
+}
+```
+
+### Congratulations! 
+
+I think this will get you set up well to contribute to the LTB project. We have covered basic HTML, Javascript usage in Qualtrics and the ways I have leveraged it to make custom multiple choice functions, prefilled text, and custom writte responses. Qualtrics is quite a closed system, so being creative in it is hard, but I hope this is a good start!
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -677,10 +736,10 @@ Great! You now know how to design a custom input (particularly a carousel) in Qu
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Create documentation
-- [ ] Add photos 
+- [X] Create documentation
+- [X] Add photos 
 - [ ] Add separate files with the code 
-- [ ] Add "components" document to easily copy & paste sections of the readme
+- [ ] Add "components" document to easily copy & paste sections of the readme for different use cases.
 
 See the [open issues](https://github.com/MikeBrock03/Lifting-The-Bar/issues) for a full list of proposed features (and known issues).
 
@@ -718,7 +777,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Michael Brockman - [@michaelnbrock](https://twitter.com/michaelnbrock) - mikebrockman@stanford.edu
+Michael Brockman - [@michaelnbrock](https://twitter.com/michaelnbrock) - mikebrockman [at] stanford.edu
 
 Project Link: [https://github.com/MikeBrock03/Lifting-The-Bar](https://github.com/MikeBrock03/Lifting-The-Bar)
 
@@ -729,6 +788,6 @@ Project Link: [https://github.com/MikeBrock03/Lifting-The-Bar](https://github.co
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-coming soon!
+Anmol & Vicky & Joey & Luciana & Alexandra & Zahara & Greg Walton & all of the many wonderful days in building 420!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
