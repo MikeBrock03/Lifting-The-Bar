@@ -77,7 +77,7 @@ These examples will demonstrate how to use both types of code in this project (H
 
 To make editing easy, we have utilized Custom CSS so that you can call a "class" that determines a font size/spacing, rather than having to do it everytime. Here is an example of using that: 
 
-![What older students shared](https://github.com/MikeBrock03/Lifting-The-Bar/images/WhatOlderStudentsShared.png)
+![What older students shared](https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/WhatOlderStudentsShared.png)
 
 ```
     <div class="section main-title">What older students shared</div>
@@ -97,9 +97,12 @@ And you could change any of the respective values. With a Google Search, any of 
 
 So, now you know that "class" calls back to something in Custom CSS and you know how to read CSS, HTML should be more straightforward and organized! 
 
-![What older students shared](https://github.com/MikeBrock03/Lifting-The-Bar/images/EmojiList.png)
+However, sometimes, it can get complicated. For example, this emoji list cannot just be done in the same way we saw above. 
 
-However, sometimes, it can get complicated. For example, the emoji list you see above cannot just be done in the same way we saw above. In that case, we call them individually, like in this example: 
+![Emoji List](https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/EmojiList.png)
+
+In that case, we call them individually, like in this example: 
+
 
 ```
 <div style="margin-top:40px; display: flex; align-items: center;" class="section title">
@@ -174,7 +177,7 @@ Qualtrics.SurveyEngine.addOnUnload(function()
 ```
 
 #### First, we will be implementing prefilled text. 
-![Prefilled text](https://github.com/MikeBrock03/Lifting-The-Bar/images/prefilledText.png)
+![Prefilled text](https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/prefilledText.png)
 
 
 First, you must create a question container and text area field, which is done like this:
@@ -278,8 +281,8 @@ And now you know how to implement pre-filled text!
 
 #### Next, we will be looking at how to implement a custom multiple-choice form.
 
-![Custom multiple choice](https://github.com/MikeBrock03/Lifting-The-Bar/images/customMultipleChoice.png)
-![Custom multiple choice 2](https://github.com/MikeBrock03/Lifting-The-Bar/images/customMultipleChoice2.png)
+![Custom multiple choice](https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/customMultipleChoice.png)
+![Custom multiple choice 2](https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/customMultipleChoice2.png)
 
 
 
@@ -366,7 +369,7 @@ container.appendChild(box);
 
 However, the "other" box is not in the data that will be looped through (which just consist of emojis). 
 
-![Custom multiple choice 2](https://github.com/MikeBrock03/Lifting-The-Bar/images/customMultipleChoice2.png)
+![Custom multiple choice 2](https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/customMultipleChoice2.png)
 
 We need to add it manually in the same way we made the other options, but replacing the emoji header with a title "Other" and the subtitle with an entry box. Because it is the same format as detailed above, here is the whole function to make the "other" input: 
 
@@ -538,7 +541,7 @@ Qualtrics.SurveyEngine.addOnUnload(function()
 Yay! Now you know how to implement a custom multiple choice field in Qualtrics. Once again, you can copy/paste this as a reference or use Stack Overflow/ChatGPT for unique implementations.
 
 #### Custom written response 
-![Custom written response](https://github.com/MikeBrock03/Lifting-The-Bar/images/customWrittenResponse.png)
+![Custom written response](https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/customWrittenResponse.png)
 
 
 Qualtrics usually has what you need when it comes to text input, particularly single line response, multiple lines, essay text box, and hidden password. However, we wanted to create a carousel where users could scroll through cards -- almost like a phone book or business cards. This is the use case detailed for this example.
@@ -667,7 +670,7 @@ Then, we create logic to determine which card to show based on if the user click
 
 Great! You now know how to design a custom input (particularly a carousel) in Qualtrics! Now, for our use case, we needed to have verification to ensure that the user inputted at least two names. If they do not, we don't want to give them access to the "next" button.
 
-![Next button](https://github.com/MikeBrock03/Lifting-The-Bar/images/nextButton.png)
+![Next button](https://github.com/MikeBrock03/Lifting-The-Bar/images/blob/main/nextButton.png)
 
 
 First, we want to make the next button.
