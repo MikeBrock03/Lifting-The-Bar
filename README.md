@@ -77,7 +77,7 @@ These examples will demonstrate how to use both types of code in this project (H
 
 To make editing easy, we have utilized Custom CSS so that you can call a "class" that determines a font size/spacing, rather than having to do it everytime. Here is an example of using that: 
 
-<img src="https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/WhatOlderStudentsShared.png" alt="What older students shared" width="500" style="padding: 20px;" />
+<img src="https://github.com/MikeBrock03/Lifting-The-Bar/blob/main/images/WhatOlderStudentsShared.png" alt="What older students shared" width="200" style="padding: 20px;" />
 
 
 ```
